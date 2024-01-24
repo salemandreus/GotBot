@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import SupplyItems
+from .models import SupplyItem
 
-admin.site.register(SupplyItems)
+admin.site.register(SupplyItem)

@@ -2,7 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.views import View
 
-from supplyitems.models import SupplyItems
+from supplyitems.models import SupplyItem
 from stock.models import Stock
 
 
@@ -41,7 +41,7 @@ class HomePage(ItemListBase):
             # Todo: get only items running low
             if request.user.is_authenticated:
                 stock = Stock.objects.all()
-                supplyitems = SupplyItems.objects.all()
+                supplyitems = SupplyItem.objects.all()
 
             return stock, supplyitems
 

@@ -1,12 +1,12 @@
 from django.shortcuts import render
 
 from chefsite.views import ItemListBase
-from .models import SupplyItems
+from .models import SupplyItem
 
 
 class SupplyItemListPage(ItemListBase):
     """
-    Return List of SupplyItems. Todo:Include links to Detailed supplyitem.
+    Return List of SupplyItem. Todo:Include links to Detailed supplyitem.
     """
     def get(self, request):
         template_name = "supplyitems/supplyitems-list.html"
@@ -18,7 +18,7 @@ class SupplyItemListPage(ItemListBase):
         # get stock
         def query_items():
             if request.user.is_authenticated:
-                qs = SupplyItems.objects.all()
+                qs = SupplyItem.objects.all()
 
             return qs
 
