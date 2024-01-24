@@ -17,10 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from chefsite.views import home
+from chefsite import views
 
 urlpatterns = [
-    path("", home, name="home"),
+    path("", views.HomePage.as_view(), name="home"),
     path('supplyitems/', include('supplyitems.urls')),
     path('stock/', include('stock.urls')),
     path('admin/', admin.site.urls),

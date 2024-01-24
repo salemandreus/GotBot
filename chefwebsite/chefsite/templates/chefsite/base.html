@@ -10,10 +10,11 @@
 </head>
 
 <body>
-{% include 'navbar.html' %}
+<!-- Nav bar -->
+{% include 'chefsite/navbar.html' %}
   <div class="container text-center">
 
-    <!-- Top Row: Nav bar, Search bar, Logged in status (username), Log In/ Log Out links -->
+    <!-- Top Row: Logged in status (username), Todo: Log In/ Log Out links -->
     <div class="row">
       <div class="col order-last">
         {% if user.is_authenticated %}

@@ -1,20 +1,44 @@
 from django.shortcuts import render
 
-def list(request):
-    context = {
-        "title": "Supply Items",
-    }
+from chefsite.views import ItemListBase
+from .models import SupplyItems
 
-    return render(request, 'list.html', context)
+
+class SupplyItemListPage(ItemListBase):
+    """
+    Return List of SupplyItems. Todo:Include links to Detailed supplyitem.
+    """
+    def get(self, request):
+        template_name = "supplyitems/list.html"
+        # context = {"utc_now": datetime.now(timezone.utc)}
+        context = {
+            "title": "Supply Items",
+        }
+
+        # get stock
+        def query_items():
+            if request.user.is_authenticated:
+                qs = SupplyItems.objects.all()
+
+            return qs
+
+        qs = query_items()
+        context['objects_count'] = qs.count()
+        # Add Pagination
+        context['page_obj'] = self.paginate(qs, request)
+
+        return render(request, template_name, context)
+
+
 
 def detail(request):
-    return render(request, 'detail.html', {})
+    return render(request, 'supplyitems/detail.html', {})
 
 def create(request):
-    return render(request, 'create.html', {})
+    return render(request, 'supplyitems/create.html', {})
 
 def update(request):
-    return render(request, 'update.html', {})
+    return render(request, 'supplyitems/update.html', {})
 
 def delete(request):
-    return render(request, 'delete.html', {})
+    return render(request, 'supplyitems/delete.html', {})

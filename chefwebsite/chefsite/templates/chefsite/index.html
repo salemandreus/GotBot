@@ -1,0 +1,38 @@
+{% extends "chefsite/base.html" %}
+
+{% block title %}
+    <h1>{{ title }}</h1>
+    <h4>{{ subtitle }}</h4>
+{% endblock %}
+
+{% block content %}
+    <!-- Stock Running Low -->
+    <hr>
+    <h5 class="lead"><strong>Stock Running Low</strong><h5>
+    {% if stock_objects_count == 0 %}
+        {% include 'chefsite/no-items.html' with title="Stock" %}
+    {% else %}
+        <!--todo: Items running low, (use warning formatting) -->
+    {% endif %}
+
+    <br>
+    <hr>
+
+    <!-- Recent Stock Refilled --> <!--Todo: set in order of recency added-->
+    <p class="lead">Recent <strong>Stock</strong> Refilled<p>
+    {% if stock_objects_count == 0 %}
+        {% include 'chefsite/no-items.html' with title="Stock" %}
+
+    {% endif %}
+<!--todo: auto-generate stock items when adding supply items-->
+
+<br>
+<hr>
+
+<!-- Recent New Supply Items Added --><!--Todo: set in order of recency added-->
+<h5 class="lead">New <strong>Supply Items</strong> Created</h5>
+    {% if supplyitems_objects_count == 0 %}
+        {% include 'chefsite/no-items.html' with title="Supply Items" %}
+    {% endif %}
+
+{% endblock %}
