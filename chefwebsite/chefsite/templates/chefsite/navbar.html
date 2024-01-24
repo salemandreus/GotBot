@@ -6,12 +6,28 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <!-- NAV LINKS -->
+
+        <!--Running Low-->
+        <li><a class="nav-link" href="{% url 'list_stock_low' %}">Running Low</a>
+        </li>
+
+        <!-- Recently Refilled-->
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_stock' %}">Stock Available</a>
+          <a class="nav-link" href="{% url 'list_stock_refilled' %}">Recently Refilled</a>
         </li>
-          <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_supplyitems' %}">Supply Items</a>
+
+        <!--All Stock-->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'list_stock' %}">All Stock</a>
         </li>
+
+
+        <!--Supply Items-->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'list_supplyitems' %}">&nbsp; &nbsp;| &emsp;  Supply Items</a>
+        </li>
+
       </ul>
     </div>
 <!--      <form class="d-flex" role="search" action="/search/">-->

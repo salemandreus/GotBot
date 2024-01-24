@@ -9,7 +9,7 @@ class SupplyItemListPage(ItemListBase):
     Return List of SupplyItems. Todo:Include links to Detailed supplyitem.
     """
     def get(self, request):
-        template_name = "supplyitems/list.html"
+        template_name = "supplyitems/supplyitems-list.html"
         # context = {"utc_now": datetime.now(timezone.utc)}
         context = {
             "title": "Supply Items",

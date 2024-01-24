@@ -6,33 +6,24 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Stock Running Low -->
-    <hr>
-    <h5 class="lead"><strong>Stock Running Low</strong><h5>
-    {% if stock_objects_count == 0 %}
-        {% include 'chefsite/no-items.html' with title="Stock" %}
-    {% else %}
-        <!--todo: Items running low, (use warning formatting) -->
-    {% endif %}
+
+    <!-- Stock Running Low --><!--todo: filter by running below "low amount/notify-refill-at amount"-->
+    <p class="lead">Stock <strong>Running Low</strong><p>
+    {% include 'chefsite/list.html' with title="Supply Items to Stock" objects_count=stock_objects_count %}
 
     <br>
     <hr>
 
     <!-- Recent Stock Refilled --> <!--Todo: set in order of recency added-->
-    <p class="lead">Recent <strong>Stock</strong> Refilled<p>
-    {% if stock_objects_count == 0 %}
-        {% include 'chefsite/no-items.html' with title="Stock" %}
+    <p class="lead">Recent Stock <strong>Refilled</strong><p>
+    {% include 'chefsite/list.html' with title="Stock Recently Refilled" objects_count=stock_objects_count %}
 
-    {% endif %}
-<!--todo: auto-generate stock items when adding supply items-->
+    <br>
+    <hr>
 
-<br>
-<hr>
+    <!-- Recent New Supply Items Added --><!--Todo: set in order of recency added-->
+    <p class="lead"><strong>New</strong> Supply Items Created</p>
+    {% include 'chefsite/list.html' with title="Supply Items" objects_count=supplyitems_objects_count %}
 
-<!-- Recent New Supply Items Added --><!--Todo: set in order of recency added-->
-<h5 class="lead">New <strong>Supply Items</strong> Created</h5>
-    {% if supplyitems_objects_count == 0 %}
-        {% include 'chefsite/no-items.html' with title="Supply Items" %}
-    {% endif %}
-
+    <br>
 {% endblock %}
