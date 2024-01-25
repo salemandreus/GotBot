@@ -1,8 +1,10 @@
 from django.shortcuts import render
 
 from chefsite.views import ItemListBase
-from .models import Stock
+from .models import SupplyItem
+from django.db.models import F
 
+#todo: make a stock and supplies base
 class StockLowListPage(ItemListBase):
     """
     Return List of Stock Items. Todo: Include links to Detailed stock items.
@@ -17,12 +19,13 @@ class StockLowListPage(ItemListBase):
         # get stock
         def query_items():
             if request.user.is_authenticated:
-                qs = Stock.objects.select_related()
+                low_stock = SupplyItem.objects.filter(min_amount__gt=F("stock__amount")).select_related()
 
-            return qs
+            return low_stock
 
         qs = query_items()
         context['objects_count'] = qs.count()
+
         # Add Pagination
         context['page_obj'] = self.paginate(qs, 30, request)
 
@@ -43,7 +46,7 @@ class StockRefilledListPage(ItemListBase):
         # get stock
         def query_items():
             if request.user.is_authenticated:
-                qs = Stock.objects.all()
+                qs = SupplyItem.objects.select_related()
 
             return qs
 
@@ -69,7 +72,7 @@ class StockAllListPage(ItemListBase):
         # get stock
         def query_items():
             if request.user.is_authenticated:
-                qs = Stock.objects.all()
+                qs = SupplyItem.objects.select_related()
 
             return qs
 
