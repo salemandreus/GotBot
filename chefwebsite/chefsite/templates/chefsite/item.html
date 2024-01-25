@@ -11,9 +11,10 @@
         <div style="height: 10rem;">
             <p class="card-text text-muted"><strong>Notes:</strong>{% if item.notes|length < 140 %} {{ item.notes}} {% else %} {{ item.notes|truncatechars:137|slice:"-3" }} <abbr title="{{item.notes}}"><strong>... ⓘ </strong></abbr> {% endif %}</p>
         </div><!--todo: truncate chars add tooltip on title and note to see full text-->
-
-        <div style="position: absolute; bottom: 0">
-            <p class="card-text" style="align:bottom;"><small class="text-muted">Last updated <strong>{{ item.updated }}</strong> by <strong>{{ item.last_edited_by }}</strong></small></p>
-        </div>
+        {% if card_type == "supplyitem" %}
+            <div style="position: absolute; bottom: 0"> <!--todo:possibly remove style-->
+                <p class="card-text" style="align:bottom;"><small class="text-muted">Last updated <strong>{{ item.updated }}</strong> by <strong>{{ item.last_edited_by }}</strong></small></p>
+            </div>
+        {% endif %}
     </div>
 </div>
