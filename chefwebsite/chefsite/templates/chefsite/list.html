@@ -5,11 +5,12 @@
         {% include 'chefsite/no-items.html' with title=title %}
     {% else %}
     <!-- Output Paginated List -->
+<!--        <div style="display:flex; flex-wrap: wrap;" flex-flow: column wrap >-->
         <div style="display:flex; flex-wrap: wrap;" >
             <!-- "card-group" "d-flex flex-row" row">card-group -->
-        {% for object in page_obj %}
-                {% include 'chefsite/item.html' with item=object %}
-        {% endfor %}
+            {% for object in page_obj %}
+                    {% include 'chefsite/item.html' with item=object %}
+            {% endfor %}
         </div>
     {% endif %}
 

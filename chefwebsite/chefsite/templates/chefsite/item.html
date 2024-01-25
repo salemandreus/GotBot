@@ -1,12 +1,19 @@
+<!--<p>{{ item.stock.amount }}</p>--> <!--flex-flow: column wrap;justify-content: space-between;"-->  <!--"display: flex; align-items: flex-end;" > --> <!-- "position: absolute; bottom: 3em;" "display: flex; align-items: flex-end;" --> <!--flex-grow: 4;  -->
                                     <!--todo: Items running low, (use warning formatting) -->
-  <div class="card mb-3" style="max-width: 16rem;" >
-     <div class="card-body">
-      {% load static %}
-      <img class="card-img-top" src="{% get_media_prefix %}{{ item.image }}" alt="Card image cap">
+<div class="card mb" style="width: 16.65rem;">
+    <div class="card-body" style="width: 16.65rem;">
+        {% load static %}
+        <img class="card-img-top img-fluid mt-1 rounded" style="max-height: 8em" src="{% get_media_prefix %}{{ item.image }}" alt="Card image cap">
+        <div style="height: 5rem;">
+            <h5 class="card-title "> {{ item.name }} </h5>
+        </div>
+        <p class="card-text">Code: <strong>{{ item.code }}</strong></p>
+        <div style="height: 10rem;">
+            <p class="card-text text-muted"><strong>Notes:</strong> {{ item.notes }}</p> <!-- ^ todo: truncate/expand / max height?-->
+        </div><!--todo: truncate chars add tooltip on title and note to see full text-->
 
-      <h5 class="card-title"> {{ item.name }} </h5>
-         <p class="card-text">Code: <strong>{{ item.code }}</strong> </p>
-      <p class="card-text text-muted"><strong>Notes:</strong> {{ item.notes }}</p>
-      <p class="card-text"><small class="text-muted">Last updated <strong>{{ item.updated }}</strong> by <strong>{{ item.last_edited_by }}</strong></small></p>
+        <div style="position: absolute; bottom: 0">
+            <p class="card-text" style="align:bottom;"><small class="text-muted">Last updated <strong>{{ item.updated }}</strong> by <strong>{{ item.last_edited_by }}</strong></small></p>
+        </div>
     </div>
-  </div>
+</div>

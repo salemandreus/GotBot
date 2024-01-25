@@ -9,21 +9,21 @@
 
     <!-- Stock Running Low --><!--todo: filter by running below "low amount/notify-refill-at amount"-->
     <p class="lead">Stock <strong>Running Low</strong><p>
-    {% include 'chefsite/list.html' with title="Supply Items to Stock" objects_count=stock_objects_count %}
+    {% include 'chefsite/list.html' with title="Supply Items to Stock" page_obj=page_obj_stock objects_count=stock_objects_count %}
 
     <br>
     <hr>
 
     <!-- Recent Stock Refilled --> <!--Todo: set in order of recency added-->
     <p class="lead">Recent Stock <strong>Refilled</strong><p>
-    {% include 'chefsite/list.html' with title="Stock Recently Refilled" objects_count=stock_objects_count %}
+    {% include 'chefsite/list.html' with title="Stock Recently Refilled" page_obj=page_obj_stock objects_count=stock_objects_count %}
 
     <br>
     <hr>
 
     <!-- Recent New Supply Items Added --><!--Todo: set in order of recency added-->
     <p class="lead"><strong>New</strong> Supply Items Created</p>
-    {% include 'chefsite/list.html' with title="Supply Items" objects_count=supplyitems_objects_count %}
+    {% include 'chefsite/list.html' with title="Supply Items" page_obj=page_obj_supplyitems objects_count=supplyitems_objects_count %}
 
     <br>
 {% endblock %}

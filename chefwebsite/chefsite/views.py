@@ -8,9 +8,9 @@ from stock.models import Stock
 
 class ItemListBase(View):
     """Will be inherited and overridden by other views that list items."""
-    def paginate(self, item_list, request):
-        """paginate a list of items"""
-        paginator = Paginator(item_list, 15)
+    def paginate(self, item_list, per_page, request):
+        """paginate a list of items. The number per page is passed in as per_page."""
+        paginator = Paginator(item_list, per_page)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
         return page_obj
@@ -49,6 +49,7 @@ class HomePage(ItemListBase):
         context['stock_objects_count'] = stock.count()
         context['supplyitems_objects_count'] = supplyitems.count()
         # Add Pagination
-        # context['page_obj'] = self.paginate(qs, request)
+        context['page_obj_stock'] = self.paginate(stock, 5, request) # todo: calculate based on size of screen then pass in that value
+        context['page_obj_supplyitems'] = self.paginate(supplyitems, 5, request)
 
         return render(request, template_name, context)

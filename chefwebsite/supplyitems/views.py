@@ -25,7 +25,7 @@ class SupplyItemListPage(ItemListBase):
         qs = query_items()
         context['objects_count'] = qs.count()
         # Add Pagination
-        context['page_obj'] = self.paginate(qs, request)
+        context['page_obj'] = self.paginate(qs, 30, request)
 
         return render(request, template_name, context)
 
