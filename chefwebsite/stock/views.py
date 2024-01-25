@@ -17,7 +17,7 @@ class StockLowListPage(ItemListBase):
         # get stock
         def query_items():
             if request.user.is_authenticated:
-                qs = Stock.objects.all()
+                qs = Stock.objects.select_related()
 
             return qs
 

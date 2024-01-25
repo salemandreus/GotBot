@@ -8,6 +8,8 @@ User = settings.AUTH_USER_MODEL
 class SupplyItem(models.Model):
     code = models.CharField(max_length=15, primary_key=True)
     name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='image/', blank=True, null=True)
+    notes = models.TextField(help_text="Notes about product stock management of this item.", null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)                                                      # no backward relation
     last_edited_by = models.ForeignKey(User, on_delete=models.PROTECT)    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="+",)

@@ -18,7 +18,7 @@ class SupplyItemListPage(ItemListBase):
         # get stock
         def query_items():
             if request.user.is_authenticated:
-                qs = SupplyItem.objects.all()
+                qs = SupplyItem.objects.select_related()
 
             return qs
 
