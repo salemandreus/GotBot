@@ -3,13 +3,13 @@
 <div class="card mb" style="width: 16.65rem;">
     <div class="card-body" style="width: 16.65rem;">
         {% load static %}
-        <img class="card-img-top img-fluid mt-1 rounded" style="max-height: 8em" src="{% get_media_prefix %}{{ item.image }}" alt="Card image cap">
-        <div style="height: 5rem;">
-            <h5 class="card-title "> {{ item.name }} </h5>
+        <img class="card-img-top img-fluid mt-1 rounded" style="max-height: 8em; padding-bottom:0.8rem" src="{% get_media_prefix %}{{ item.image }}" alt="Card image cap">
+        <div style="height: 4rem;">
+            <h5 class="card-title ">{% if item.name|length < 43 %} {{ item.name}} {% else %} {{ item.name|truncatechars:40|slice:"-3" }} <abbr title="{{item.name}}"><strong>... <small class="text-muted"> ⓘ </small> </strong></abbr> {% endif %} </h5>
         </div>
         <p class="card-text">Code: <strong>{{ item.code }}</strong></p>
         <div style="height: 10rem;">
-            <p class="card-text text-muted"><strong>Notes:</strong> {{ item.notes }}</p> <!-- ^ todo: truncate/expand / max height?-->
+            <p class="card-text text-muted"><strong>Notes:</strong>{% if item.notes|length < 140 %} {{ item.notes}} {% else %} {{ item.notes|truncatechars:137|slice:"-3" }} <abbr title="{{item.notes}}"><strong>... ⓘ </strong></abbr> {% endif %}</p>
         </div><!--todo: truncate chars add tooltip on title and note to see full text-->
 
         <div style="position: absolute; bottom: 0">
