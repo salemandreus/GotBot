@@ -41,7 +41,7 @@
             </p>
         </div><!--todo: truncate chars add tooltip on title and note to see full text-->
 
-        <div> <!-- style="position: absolute; bottom: 0"> --> <!--todo:possibly remove style-->
+        <div style="padding-top : 1rem"> <!-- style="position: absolute; bottom: 0"> --> <!--todo:possibly remove style-->
 <!-- todo:  only show/allow create/update if is authorized-->
 <!-- todo:  only show/allow edit/delete if is staff-->
     <!-- SUPPLY ITEMS -->
@@ -50,7 +50,7 @@
 
     <!-- STOCK -->
             {% else %}
-                <p class="card-text" style="align:bottom; ">In Stock:
+                <p class="card-text" style="align:bottom; margin-bottom:0">In Stock:
                    <!-- COLOR INDICATE HOW LOW STOCK AMOUNT IS -->
                     <strong class="
                         {% if item.stock.amount < item.min_amount  %}
@@ -66,11 +66,19 @@
                         {% if item.stock.amount < item.min_amount  %} <strong class="text-danger">&emsp; RUNNING LOW!</strong> {% endif %}
                     </strong>
                 </p>
-                <p class="card-text" style="padding-bottom:0; align:bottom;">Recommended: </strong></p>
-                <p class="card-text" style="align:bottom;"> Min: <strong>{{ item.min_amount }}</strong>&emsp;
-                                                            Med: <strong>{{ item.med_amount }}</strong>&emsp;
-                                                            Max: <strong>{{ item.max_amount }}</strong>
-                </p>
+                <div class="container text-left">
+                    <div class="row">
+                        <div class="col" style="padding-left:0">
+                            <p class="card-text" style="padding-bottom:0; align:bottom;">Recommended: </strong></p>
+                        </div>
+                        <div class="col " style="padding-left:0">
+                            <p class="card-text" style="align:bottom;"> Min: <strong>{{ item.min_amount }}</strong>&emsp;
+                                                                        Med: <strong>{{ item.med_amount }}</strong>&emsp;
+                                                                        Max: <strong>{{ item.max_amount }}</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>

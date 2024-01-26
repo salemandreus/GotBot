@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from chefsite.views import ItemListBase
 from .models import SupplyItem
@@ -10,10 +10,11 @@ class StockLowListPage(ItemListBase):
     Return List of Stock Items. Todo: Include links to Detailed stock items.
     """
     def get(self, request):
-        template_name = "stock/running-low-list.html"
+        template_name = "chefsite/list-page.html"
         # context = {"utc_now": datetime.now(timezone.utc)}
         context = {
             "title": "Stock Running Low",
+            "card_type": "stock",
         }
 
         # get stock
@@ -37,10 +38,11 @@ class StockRefilledListPage(ItemListBase):
     Return List of Stock Items. Todo: Include links to Detailed stock items.
     """
     def get(self, request):
-        template_name = "stock/recently-refilled-list.html"
+        template_name = "chefsite/list-page.html"
         # context = {"utc_now": datetime.now(timezone.utc)}
         context = {
             "title": "Stock Recently Refilled",
+            "card_type": "stock",
         }
 
         # get stock
@@ -63,10 +65,11 @@ class StockAllListPage(ItemListBase):
     Return List of Stock Items. Todo: Include links to Detailed stock items.
     """
     def get(self, request):
-        template_name = "stock/all-list.html"
+        template_name = "chefsite/list-page.html"
         # context = {"utc_now": datetime.now(timezone.utc)}
         context = {
             "title": "All Stock",
+            "card_type": "stock",
         }
 
         # get stock
@@ -84,28 +87,20 @@ class StockAllListPage(ItemListBase):
         return render(request, template_name, context)
 
 
+def detail(request, slug):
+    """
+    Retrieve a single item with its stock amount via a slug (detailed).
+    Include buttons to update stock amount.
+    """
+    template_name = "chefsite/detail.html"
+    obj = get_object_or_404(SupplyItem, slug=slug)
+    context = {
+        "title": f"Code: {obj.code} Name: {obj.name}",
+        "card_type": "stock",
+        "object": obj
+    }
 
-# class StockDetailPage(ItemListBase):#Todo: make a ItemDetailBase
-#     """
-#     Retrieve a single stock item via a slug (detailed).
-#     Include buttons to add/edit stock amounts.
-
-#     """
-#     def get(self, request, slug):
-#         obj = get_object_or_404(Stock, slug=slug)
-#         template_name = "stock/detail.html"
-#
-#         def query_stock():
-#             # Get item with stock amount
-#             qs = obj.responses().published()
-#             if request.user.is_authenticated:
-#                 my_qs = obj.responses().filter(user=request.user)
-#                 qs = (qs | my_qs).distinct()
-#             return qs
-#
-#         qs = query_stock()
-#
-#         return render(request, template_name, context)
+    return render(request, template_name, context)
 
 def update(request):
     return render(request, 'stock/form.html', {})

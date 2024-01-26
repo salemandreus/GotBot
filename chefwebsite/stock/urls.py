@@ -5,4 +5,5 @@ urlpatterns = [
     path('', views.StockAllListPage.as_view(), name='list_stock'),
     path('running-low/', views.StockLowListPage.as_view(), name='list_stock_low'),
     path('refilled/', views.StockRefilledListPage.as_view(), name='list_stock_refilled'),
+    path("<str:slug>/", views.detail, name='detail_stock'),
 ]

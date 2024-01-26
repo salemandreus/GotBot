@@ -13,10 +13,11 @@ class SupplyItemListPage(ItemListBase):
     Return List of SupplyItem. Todo:Include links to Detailed supplyitem.
     """
     def get(self, request):
-        template_name = "supplyitems/supplyitems-list.html"
+        template_name = "chefsite/list-page.html"
         # context = {"utc_now": datetime.now(timezone.utc)}
         context = {
             "title": "Supply Items",
+            "card_type": "supplyitem",
         }
 
         # get stock
@@ -39,7 +40,7 @@ def detail(request, slug):
     Retrieve a single supplyitem via a slug (detailed).
     Include buttons to edit or delete supplyitem.
     """
-    template_name = "supplyitems/detail.html"
+    template_name = "chefsite/detail.html"
     obj = get_object_or_404(SupplyItem, slug=slug)
     context = {
         "title": f"Code: {obj.code} Name: {obj.name}",
