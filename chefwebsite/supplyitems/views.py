@@ -1,3 +1,4 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 from chefsite.views import ItemListBase
@@ -81,6 +82,21 @@ def update(request, slug):
 
     return render(request, template_name, context)
 
+@staff_member_required
+def delete(request, slug):
+    """Delete SupplyItem. Only staff members are allowed to do this."""
 
-def delete(request):
+    obj = get_object_or_404(SupplyItem, slug=slug)
+    template_name = "supplyitems/confirm-delete.html"
+
+    if request.method == "POST":
+        obj.delete()
+        return redirect("list_supplyitems")
+
+    context = {"object": obj}
+
+    return render(request, template_name, context)
+
+
+
     return render(request, 'supplyitems/delete.html', {})

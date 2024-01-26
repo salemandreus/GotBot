@@ -1,9 +1,20 @@
 {% extends "chefsite/base.html" %}
 
-{% block title %}
-    <h1>{{ title }}</h1>
-    <h4>{{ subtitle }}</h4>
+<!-- todo: show detailed view on this page so user can see the item being deleted -->
+{% block title %}<!-- todo: or show as an alert! -->
+    <h1>Are you sure you want to delete the following?</h1>
+    <br>
+<h5>Name: <strong>{{ object.name }}</strong> with Code: <strong> {{object.code}} </strong></h5>
 {% endblock %}
 
 {% block content %}
+<!--    <h1>Are you sure you want to delete the following?</h1>-->
+<!--    <p>{{ object.title }}</p>-->
+
+    <form method="POST">{% csrf_token %}
+
+        <input type="hidden" name="redirect_url" value="{{ request.META.HTTP_REFERER }}">
+        <button class="btn btn-danger">Yes, delete</button>
+
+    </form>
 {% endblock %}
