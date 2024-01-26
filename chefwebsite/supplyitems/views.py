@@ -113,8 +113,11 @@ def delete(request, slug):
         obj = get_object_or_404(SupplyItem, slug=slug)
 
         if request.method == "POST":
-            obj.delete()
-            return redirect("list_supplyitems")
+            if request.POST.get("cancel"):
+                return redirect('list_supplyitems')
+            elif request.POST.get("confirm"):
+                obj.delete()
+                return redirect("list_supplyitems")
 
         context["object"] = obj
 

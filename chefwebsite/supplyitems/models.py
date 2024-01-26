@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib import admin
+from django.urls import reverse
 
 User = settings.AUTH_USER_MODEL
 
@@ -16,6 +17,15 @@ class SupplyItem(models.Model):
     min_amount = models.IntegerField(help_text="Below this amount, stock is 'low'", default=0)
     med_amount = models.IntegerField(help_text="Below this amount, stock is at 'medium' amount", default=0)
     max_amount = models.IntegerField(help_text="At this amount, stock is at 'max recommended', above it is 'above max recommended'", default=0)
+
+    def get_absolute_url(self):
+        return f"{reverse('list_supplyitems')}{self.slug}"
+
+    def get_edit_url(self):
+        return f"{self.get_absolute_url()}/edit"
+
+    def get_delete_url(self):
+        return f"{self.get_absolute_url()}/delete"
 
 class SupplyItemAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("code",)}

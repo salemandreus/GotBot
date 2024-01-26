@@ -25,8 +25,18 @@
 
         <!--Supply Items-->
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_supplyitems' %}">&nbsp; &nbsp;| &emsp;  Supply Items</a>
+          <a class="nav-link" href="{% url 'list_supplyitems' %}">&nbsp; &nbsp;| &emsp;  Supply Items &nbsp;</a>
         </li>
+
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'create_supplyitem' %}">
+              <img src ="../../../static/supplyitems/new-supplyitem.png">
+          </a>
+        </li>
+      </ul>
+
 
       </ul>
     </div>

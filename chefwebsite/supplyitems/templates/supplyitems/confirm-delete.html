@@ -13,8 +13,7 @@
     <form method="POST">{% csrf_token %}
 
         <input type="hidden" name="redirect_url" value="{{ request.META.HTTP_REFERER }}">
-        <button class="btn btn-secondary">Cancel</button>
-        <button class="btn btn-danger">Yes, delete</button>
-
-    </form>
+            <button class="btn btn-secondary" type="submit" name="cancel" value="Cancel">Cancel</button>
+            <button class="btn btn-danger" type="submit" name="confirm" value="Delete">Yes, delete</button>
+        </form>
 {% endblock %}
