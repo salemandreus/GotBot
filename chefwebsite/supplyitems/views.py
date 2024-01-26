@@ -61,6 +61,7 @@ def create(request):
 
     return render(request, template_name, context)
 
+
 def update(request, slug):
     """ Update existing SupplyItem via a form. """
 
@@ -82,6 +83,7 @@ def update(request, slug):
 
     return render(request, template_name, context)
 
+
 @staff_member_required
 def delete(request, slug):
     """Delete SupplyItem. Only staff members are allowed to do this."""
@@ -96,7 +98,3 @@ def delete(request, slug):
     context = {"object": obj}
 
     return render(request, template_name, context)
-
-
-
-    return render(request, 'supplyitems/delete.html', {})
