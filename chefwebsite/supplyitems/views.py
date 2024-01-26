@@ -2,6 +2,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 from chefsite.views import ItemListBase
+from stock.models import Stock
 
 from .forms import SupplyItemModelForm
 
@@ -62,12 +63,15 @@ def create(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.last_edited_by = request.user
-
-            # obj.name= form.cleaned_data.get("name") + "0"
             obj.save()
-# todo: redirects to detailed vs list as appropriate - change again if Modal
-            # return redirect("detail_supplyitem", obj.slug)
-            return redirect("list_supplyitems")
+
+            # Created a Stock record that corresponds to the SupplyItem
+            stock_item = Stock(item_code=obj, amount=0, refilled_by=request.user)
+            stock_item.save()
+                                                                                                    # obj.name= form.cleaned_data.get("name") + "0"
+            # Redirect to Stock Detail Page for created item                                                 #todo: redirects to detailed vs list as appropriate - change again if Modal
+            return redirect("detail_stock", obj.slug)                       # todo: a notification on how they can add stock
+                                                                                   # todo: redirect to add-stock form view! with a skip option redirects to list or item
     context["form"] = form
 
     # todo: creating triggers adding initial stock item and prompt whether to add stock, default to 0 otherwise
