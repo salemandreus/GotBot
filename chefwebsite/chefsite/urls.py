@@ -20,10 +20,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from chefsite import views
+from supplyitems.views import create
 
 urlpatterns = [
     path("", views.HomePage.as_view(), name="home"),
     path('supplyitems/', include('supplyitems.urls')),
+    path('supplyitem-new/', create, name='create_supplyitem'),
     path('stock/', include('stock.urls')),
     path('admin/', admin.site.urls),
 ]

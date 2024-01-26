@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from chefsite.views import ItemListBase
+
+from .forms import SupplyItemModelForm
+
 from .models import SupplyItem
 
 
@@ -12,7 +15,7 @@ class SupplyItemListPage(ItemListBase):
         template_name = "supplyitems/supplyitems-list.html"
         # context = {"utc_now": datetime.now(timezone.utc)}
         context = {
-            "title": "Supply Items",
+            "name": "Supply Items",
         }
 
         # get stock
@@ -30,12 +33,32 @@ class SupplyItemListPage(ItemListBase):
         return render(request, template_name, context)
 
 
-
 def detail(request):
     return render(request, 'supplyitems/detail.html', {})
 
+
 def create(request):
-    return render(request, 'supplyitems/create.html', {})
+    """ Create SupplyItem via a form. """
+
+    template_name = "supplyitems/form.html"
+
+    context = {"name": "Create A New SupplyItem"}
+    form = SupplyItemModelForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.last_edited_by = request.user
+
+        # obj.name= form.cleaned_data.get("name") + "0"
+        obj.save()
+
+        # return redirect("detail_supplyitem", obj.slug)
+        return redirect("list_supplyitems")
+    context["form"] = form
+
+
+    # todo: creating triggers adding initial stock item and prompt whether to add stock, default to 0 otherwise
+
+    return render(request, template_name, context)
 
 def update(request):
     return render(request, 'supplyitems/update.html', {})
