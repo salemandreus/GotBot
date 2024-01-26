@@ -107,7 +107,6 @@ class StockAllListPage(ItemListBase):
 #
 #         return render(request, template_name, context)
 
-
 def update(request):
     return render(request, 'stock/form.html', {})
 

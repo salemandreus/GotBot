@@ -9,12 +9,10 @@
 
 <form method='POST' action='' enctype="multipart/form-data"> {% csrf_token %}
     {{ form.as_p }}
-<!--    <button type="btn">Cancel</button>-->
-<!--    <button class="btn btn-danger">Delete</button>-->
     <button type="submit">Send</button>
 </form>
-<!-- CREATE SLUG FROM CODE (PK) (only if creating new - ignores if updating existing: https://www.w3.org/Provider/Style/URI) -->
 
+<!-- CREATE SLUG FROM CODE (PK) (only if creating new - ignores if updating existing: https://www.w3.org/Provider/Style/URI) -->
 {% if request.path == '/supplyitem-new/' %}<!-- creating a new supplyitem -->
     <script src="../../static/supplyitems/createslugfromid.js"></script>
 {%  endif %}

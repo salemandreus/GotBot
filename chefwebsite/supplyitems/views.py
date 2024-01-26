@@ -16,7 +16,7 @@ class SupplyItemListPage(ItemListBase):
         template_name = "supplyitems/supplyitems-list.html"
         # context = {"utc_now": datetime.now(timezone.utc)}
         context = {
-            "name": "Supply Items",
+            "title": "Supply Items",
         }
 
         # get stock
@@ -34,27 +34,20 @@ class SupplyItemListPage(ItemListBase):
         return render(request, template_name, context)
 
 
-def detail(request):
-    # class StockDetailPage(ItemListBase):#Todo: make a ItemDetailBase
+def detail(request, slug):
     """
     Retrieve a single supplyitem via a slug (detailed).
     Include buttons to edit or delete supplyitem.
     """
-    def get(self, request, slug):
-    obj = get_object_or_404(Stock, slug=slug)
-    template_name = "stock/detail.html"
-        def query_stock():
-    # Get item with stock amount
-    qs = obj.responses().published()
-    if request.user.is_authenticated:
-    my_qs = obj.responses().filter(user=request.user)
-    qs = (qs | my_qs).distinct()
-    return qs
-        qs = query_stock()
-        return render(request, template_name, context)
+    template_name = "supplyitems/detail.html"
+    obj = get_object_or_404(SupplyItem, slug=slug)
+    context = {
+        "title": f"Code: {obj.code} Name: {obj.name}",
+        "card_type": "supplyitem",
+        "object": obj
+    }
 
-
-    return render(request, 'supplyitems/detail.html', {})
+    return render(request, template_name, context)
 
 
 def create(request):
@@ -63,32 +56,35 @@ def create(request):
     template_name = "supplyitems/form.html"
 
     context = {"title": "Create A New SupplyItem"}
-    form = SupplyItemModelForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        obj = form.save(commit=False)
-        obj.last_edited_by = request.user
+    if request.user.is_authenticated:
+        form = SupplyItemModelForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.last_edited_by = request.user
 
-        # obj.name= form.cleaned_data.get("name") + "0"
-        obj.save()
-
-        # return redirect("detail_supplyitem", obj.slug)
-        return redirect("list_supplyitems")
+            # obj.name= form.cleaned_data.get("name") + "0"
+            obj.save()
+# todo: redirects to detailed vs list as appropriate - change again if Modal
+            # return redirect("detail_supplyitem", obj.slug)
+            return redirect("list_supplyitems")
     context["form"] = form
-
 
     # todo: creating triggers adding initial stock item and prompt whether to add stock, default to 0 otherwise
 
     return render(request, template_name, context)
 
-
+@staff_member_required
 def update(request, slug):
     """ Update existing SupplyItem via a form. """
 
+    template_name = "supplyitems/form.html"
+    context = {}
+    # if request.user.is_authenticated: Todo: does it return this if unauthorized? Test
     obj = get_object_or_404(SupplyItem, slug=slug)
     if obj is None: # todo: test
         return redirect("list_supplyitems")
     else:
-        context = {"title": f"Update {obj.name}"}
+        context ["title"] = f"Update {obj.name}"
         # GET EXISTING FORM
         form = SupplyItemModelForm(request.POST or None, request.FILES or None, instance=obj)
         if form.is_valid():
@@ -98,22 +94,23 @@ def update(request, slug):
             return redirect("list_supplyitems")  # args=form.fields.slug))
 
         context["form"] = form
-    template_name = "supplyitems/form.html"
 
     return render(request, template_name, context)
 
 
 @staff_member_required
 def delete(request, slug):
-    """Delete SupplyItem. Only staff members are allowed to do this."""
+    """Delete SupplyItem. Only staff members are allowed to do this.""" # todo: make sure this works with staff only
 
-    obj = get_object_or_404(SupplyItem, slug=slug)
     template_name = "supplyitems/confirm-delete.html"
+    context = {}
+    if request.user.is_authenticated:
+        obj = get_object_or_404(SupplyItem, slug=slug)
 
-    if request.method == "POST":
-        obj.delete()
-        return redirect("list_supplyitems")
+        if request.method == "POST":
+            obj.delete()
+            return redirect("list_supplyitems")
 
-    context = {"object": obj}
+        context["object"] = obj
 
     return render(request, template_name, context)
