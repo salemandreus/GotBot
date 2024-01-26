@@ -85,6 +85,28 @@ class StockAllListPage(ItemListBase):
 
 
 
+# class StockDetailPage(ItemListBase):#Todo: make a ItemDetailBase
+#     """
+#     Retrieve a single stock item via a slug (detailed).
+#     Include buttons to add/edit stock amounts.
+
+#     """
+#     def get(self, request, slug):
+#         obj = get_object_or_404(Stock, slug=slug)
+#         template_name = "stock/detail.html"
+#
+#         def query_stock():
+#             # Get item with stock amount
+#             qs = obj.responses().published()
+#             if request.user.is_authenticated:
+#                 my_qs = obj.responses().filter(user=request.user)
+#                 qs = (qs | my_qs).distinct()
+#             return qs
+#
+#         qs = query_stock()
+#
+#         return render(request, template_name, context)
+
 
 def update(request):
     return render(request, 'stock/form.html', {})
