@@ -1,7 +1,7 @@
                                     <!--todo: Items running low, (use warning formatting) -->
 <!--todo: resize to any size on detailed-->
                 <!-- if empty stock shows card a different colour -->
-<div class="card {% if card_type == "stock" and item.stock.amount == 0 %}text-white bg-secondary mb-3{% endif %}" style="display:flex; flex-wrap: nowrap;"> <!--</div> {/% if detail != True %} style="width: 16.65rem; {/% endif %}">-->
+<div class="card {% if card_type == "stock" and item.stock.amount == 0 %}text-white bg-secondary mb-3{% else %}bg-light mb-3 {% endif %}" style="display:flex; flex-wrap: nowrap;"> <!--</div> {/% if detail != True %} style="width: 16.65rem; {/% endif %}">-->
     <div class="card-body mx-auto" style="width:{% if detail == True %}33.3{% else %}16{% endif %}rem;" >
         {% load static %}
         <img class="card-img-top img-fluid rounded" style="height:{% if detail == True %}16{% else %}8{% endif %}em; padding-bottom:0.8rem" src="{% get_media_prefix %}{{ item.image }}" alt="Card image cap">
