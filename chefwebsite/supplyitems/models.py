@@ -27,5 +27,8 @@ class SupplyItem(models.Model):
     def get_delete_url(self):
         return f"{self.get_absolute_url()}/delete"
 
+    def get_stock_item_url(self):
+        return f"{reverse('list_stock')}{self.slug}"
+
 class SupplyItemAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("code",)}
