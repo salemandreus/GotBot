@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from chefsite.views import ItemListBase
 
@@ -42,7 +42,7 @@ def create(request):
 
     template_name = "supplyitems/form.html"
 
-    context = {"name": "Create A New SupplyItem"}
+    context = {"title": "Create A New SupplyItem"}
     form = SupplyItemModelForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         obj = form.save(commit=False)
@@ -60,8 +60,27 @@ def create(request):
 
     return render(request, template_name, context)
 
-def update(request):
-    return render(request, 'supplyitems/update.html', {})
+def update(request, slug):
+    """ Update existing SupplyItem via a form. """
+
+    obj = get_object_or_404(SupplyItem, slug=slug)
+    if obj is None: # todo: test
+        return redirect("list_supplyitems")
+    else:
+        context = {"title": f"Update {obj.name}"}
+        # GET EXISTING FORM
+        form = SupplyItemModelForm(request.POST or None, request.FILES or None, instance=obj)
+        if form.is_valid():
+            form.save()
+
+            # return redirect("detail_supplyitem", obj.slug)  # args=form.fields.slug))
+            return redirect("list_supplyitems")  # args=form.fields.slug))
+
+        context["form"] = form
+    template_name = "supplyitems/form.html"
+
+    return render(request, template_name, context)
+
 
 def delete(request):
     return render(request, 'supplyitems/delete.html', {})
