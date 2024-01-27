@@ -2,11 +2,12 @@
 <!--todo: resize to any size on detailed-->
                 <!-- if empty stock shows card a different colour -->
 <!-- CARDS ARE LINKS TO DETAILED VIEW -->
+    <!-- USES DETAILED VIEW IF SELECTING FROM SUPPLYITEMS LIST --><!-- USES STOCK DETAILED VIEW IF SELECTING FROM STOCK LIST -->
 <a href="
-    {% if card_type == "supplyitem" %}<!-- USE SUPPLYITEM DETAILED VIEW IF SELECTING FROM SUPPLYITEMS LIST -->
+    {% if card_type == "supplyitem" %}
         {{item.get_absolute_url}}
     {% else %}
-        {{item.get_stock_item_url}} <!-- USE STOCK DETAILED VIEW IF SELECTING FROM STOCK LIST -->
+        {{item.get_stock_item_url}}
     {% endif %}
     " style="text-decoration:none">
     <div class="card {% if card_type == "stock" and item.stock.amount == 0 %}text-white bg-secondary mb-3{% else %}bg-light mb-3 {% endif %}" style="display:flex; flex-wrap: nowrap;"> <!--</div> {/% if detail != True %} style="width: 16.65rem; {/% endif %}">-->
