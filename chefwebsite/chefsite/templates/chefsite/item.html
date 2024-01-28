@@ -17,19 +17,19 @@
         </abbr>
     </a>
 
-    <!-- DETAILED VIEW MODAL -->
-    <div class="modal fade" id="{{item.code}}-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document" style="pointer-events:all">
-            <!-- DETAILED VIEW -->
+<!-- DETAILED VIEW MODAL -->
+   <div class="modal fade" id="{{item.code}}-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="pointer-events:all">
+    <!-- DETAILED VIEW -->
             <div class="mx-auto" style="display:table">
                 {% include 'chefsite/item-details.html' with item=item detail=True %}
-                    <div class="modal-footer">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                   {% if card_type == "stock" %}
+                    {% if card_type == "stock" %}
                         <button type="button" class="btn btn-primary">Save changes</button>
                     {% endif %}
-                  </div>
+                </div>
             </div>
-          </div>
+        </div>
     </div>
 {% endif %}
