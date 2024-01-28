@@ -1,0 +1,109 @@
+<div class="card {% if card_type == "stock" and item.stock.amount == 0 %}text-white bg-secondary mb-3{% else %}bg-light mb-3 {% endif %}" style="display:flex; flex-wrap: nowrap;"> <!--</div> {/% if detail != True %} style="width: 16.65rem; {/% endif %}">-->
+    <div class="card-body mx-auto" style="width:{% if detail == True %}33.3{% else %}16{% endif %}rem;" >
+        {% load static %}
+        <img class="card-img-top img-fluid rounded" style="height:{% if detail == True %}16{% else %}8{% endif %}em; padding-bottom:0.8rem" src="{% get_media_prefix %}{{ item.image }}" alt="Card image cap">
+        <div style="height: 3.2rem;">
+            <h5 class="card-title ">
+            <!-- Detailed SupplyItem views -->
+                {% if detail == True %}
+                  {{ item.name }}
+                {% else %}
+                    {% if item.name|length < 43 %}
+                        {{ item.name}}
+                    {% else %}
+                        {{ item.name|truncatechars:40|slice:"-3" }} <abbr title="{{item.name}}"><strong>... <small class="text-muted"> ⓘ </small> </strong></abbr>
+                    {% endif %}
+                {% endif %}
+            </h5>
+        </div>
+        <div style="height: 1.6rem;">
+            <p class="card-text">Code: <strong>{{ item.code }}</strong></p>
+        </div>
+        <div style="height: 7rem;">
+            <p class="card-text text-{% if card_type == "stock" and item.stock.amount == 0 %}white{% else %}muted{% endif %}">
+                <i>
+                    <strong>Notes:</strong>
+                    {% if detail == True %}
+                        {{ item.notes }}
+                    {% else %}
+                        {% if item.notes|length < 123 %}
+                            {{ item.notes}}
+                        {% else %}                                             <!-- remove generated ellipses-->
+                            {{ item.notes|truncatechars:120|slice:"-3" }}
+                            <abbr title="{{item.notes}}">
+                                <strong> ... ⓘ </strong>
+                            </abbr>
+                        {% endif %}
+                    {% endif %}
+                </i>
+            </p>
+        </div><!--todo: truncate chars add tooltip on title and note to see full text-->
+
+        <div style="padding-top : 1rem"> <!-- style="position: absolute; bottom: 0"> --> <!--todo:possibly remove style-->
+        <!-- todo:  only show/allow create/update if is authorized-->
+        <!-- todo:  only show/allow edit/delete if is staff-->
+
+        <!-- SUPPLY ITEMS -->
+            <!-- "LAST UPDATED" INFO -->
+            {% if card_type == "supplyitem" %}
+                <p class="card-text" style="align:bottom;"><small class="text-muted">Last updated <strong>{{ item.updated }}</strong> by <strong>{{ item.last_edited_by }}</strong></small></p>
+
+            <!-- "EDIT" AND "DELETE" LINKS -->
+                {% if request.user.is_authenticated %}
+                    {% if not post.is_deleted and request.user.is_staff %}
+                    <div class="container text-left">
+                        <div class="row">
+                            <div class="col-2" style="padding:0">
+                                <a href="{{ item.get_edit_url }}"><img src ="../../../static/supplyitems/edit-pencil.png"></a>&nbsp;
+                            </div>
+                            <div class="col-9" style="padding:0">
+                            </div>
+                            <div class="col-1" style="padding:0">
+                                <a href="{{ item.get_delete_url }}"><img src ="../../../static/supplyitems/delete.png"></a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endif %}
+        <!-- STOCK -->
+            {% else %}
+                <p class="card-text" style="align:bottom; margin-bottom:0">In Stock:
+                   <!-- COLOR INDICATE HOW LOW STOCK AMOUNT IS -->
+                    <strong class="
+                        {% if item.stock.amount == 0 %}
+                            text-white
+                        {% elif item.stock.amount < item.min_amount  %}
+                            text-danger
+                        {% elif item.stock.amount < item.med_amount %}
+                            text-warning
+                        {% else %}
+                            text-success
+                        {% endif %}
+                        ;">{{ item.stock.amount }}
+
+                    <!-- ALSO WARNING TEXT IF EMPTY OR RUNNING LOW -->
+                        {% if item.stock.amount == 0 %}
+                            <strong class="text-white">&emsp; OUT OF STOCK </strong>
+                        {% elif item.stock.amount < item.min_amount  %}
+                            <strong class="text-danger">&emsp; RUNNING LOW!</strong>
+                        {% endif %}
+
+                    </strong>
+                </p>
+                <div class="container text-left">
+                    <div class="row">
+                        <div class="col" style="padding-left:0">
+                            <p class="card-text" style="padding-bottom:0; align:bottom;">Recommended: </strong></p>
+                        </div>
+                        <div class="col " style="padding-left:0">
+                            <p class="card-text" style="align:bottom;"> Min: <strong>{{ item.min_amount }}</strong>&emsp;
+                                                                        Med: <strong>{{ item.med_amount }}</strong>&emsp;
+                                                                        Max: <strong>{{ item.max_amount }}</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
