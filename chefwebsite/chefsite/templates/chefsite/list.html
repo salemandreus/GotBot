@@ -7,7 +7,7 @@
     <!-- Output Paginated List -->
         <div style="display:flex; flex-wrap: wrap;" >
             {% for object in page_obj %}
-                    {% include 'chefsite/item.html' with item=object %}
+                    {% include 'chefsite/item.html' with item=object detail=False %}
             {% endfor %}
         </div>
     {% endif %}

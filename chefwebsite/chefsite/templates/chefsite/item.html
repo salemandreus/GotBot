@@ -4,23 +4,28 @@
 <!-- CARDS ARE LINKS TO DETAILED VIEW -->
     <!-- USES DETAILED VIEW IF SELECTING FROM SUPPLYITEMS LIST --><!-- USES STOCK DETAILED VIEW IF SELECTING FROM STOCK LIST -->
 
-<!-- Button trigger modal -->
-<a href="id= "myModal" data-bs-toggle="modal" data-bs-target="#{{item.code}}-modal"" style="text-decoration:none">
+<!-- On Click triggers detailed modal - works only in list view (not on detailed page) -->
+{% if detail == False %}
+    <a href="id= "myModal" data-bs-toggle="modal" data-bs-target="#{{item.code}}-modal"" style="text-decoration:none">
+{% endif %}
+
     <!-- Card Content -->
     {% include 'chefsite/item-details.html' %}
-</a>
 
+{% if detail == False %}
+    </a>
 
-<!-- DETAILED VIEW MODAL -->
-<div class="modal fade" id="{{item.code}}-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="pointer-events:all">
-        <!-- DETAILED VIEW -->
-        <div class="mx-auto" style="display:table">
-            {% include 'chefsite/item-details.html' with item=item detail=True %}
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
-        </div>
-      </div>
-</div>
+    <!-- DETAILED VIEW MODAL -->
+    <div class="modal fade" id="{{item.code}}-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document" style="pointer-events:all">
+            <!-- DETAILED VIEW -->
+            <div class="mx-auto" style="display:table">
+                {% include 'chefsite/item-details.html' with item=item detail=True %}
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+            </div>
+          </div>
+    </div>
+{% endif %}

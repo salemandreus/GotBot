@@ -41,7 +41,7 @@ def detail(request, slug):
     Retrieve a single supplyitem via a slug (detailed).
     Include buttons to edit or delete supplyitem.
     """
-    template_name = "chefsite/detail.html"
+    template_name = "chefsite/detail-page.html"
     obj = get_object_or_404(SupplyItem, slug=slug)
     context = {
         "title": f"Code: {obj.code} Name: {obj.name}",

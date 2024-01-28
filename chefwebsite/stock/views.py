@@ -92,7 +92,7 @@ def detail(request, slug):
     Retrieve a single item with its stock amount via a slug (detailed).
     Include buttons to update stock amount.
     """
-    template_name = "chefsite/detail.html"
+    template_name = "chefsite/detail-page.html"
     obj = get_object_or_404(SupplyItem, slug=slug)
     context = {
         "title": f"Code: {obj.code} Name: {obj.name}",
