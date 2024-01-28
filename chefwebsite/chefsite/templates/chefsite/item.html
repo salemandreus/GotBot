@@ -6,13 +6,15 @@
 
 <!-- On Click triggers detailed modal - works only in list view (not on detailed page) -->
 {% if detail == False %}
-    <a href="id= "myModal" data-bs-toggle="modal" data-bs-target="#{{item.code}}-modal"" style="text-decoration:none">
+    <a href="id= "myModal" data-bs-toggle="modal" data-bs-target="#{{item.code}}-modal" style="text-decoration:none">
+        <abbr title="{{card_tooltip_message}}" style="text-decoration:none; cursor: inherit;">
 {% endif %}
 
     <!-- Card Content -->
     {% include 'chefsite/item-details.html' %}
 
 {% if detail == False %}
+        </abbr>
     </a>
 
     <!-- DETAILED VIEW MODAL -->

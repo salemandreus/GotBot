@@ -34,6 +34,8 @@ class HomePage(ItemListBase):
         # context = {"utc_now": datetime.now(timezone.utc)}
         context = {
             "title": "Welcome back, {username}!".format(username=request.user),
+            "supplyitems_card_tooltip_message" : "Click to view full info for the supply item.",
+            "stock_card_tooltip_message" : "Click to view full info or update stock."
         }
 
         # get stock

@@ -15,6 +15,7 @@ class StockLowListPage(ItemListBase):
         context = {
             "title": "Stock Running Low",
             "card_type": "stock",
+            "card_tooltip_message": "Click to view full info or update stock.",
         }
 
         # get stock
@@ -43,6 +44,7 @@ class StockRefilledListPage(ItemListBase):
         context = {
             "title": "Stock Recently Refilled",
             "card_type": "stock",
+            "card_tooltip_message": "Click to view full info or update stock."
         }
 
         # get stock
@@ -70,6 +72,7 @@ class StockAllListPage(ItemListBase):
         context = {
             "title": "All Stock",
             "card_type": "stock",
+            "card_tooltip_message": "Click to view full info or update stock."
         }
 
         # get stock

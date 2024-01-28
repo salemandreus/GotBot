@@ -19,6 +19,7 @@ class SupplyItemListPage(ItemListBase):
         context = {
             "title": "Supply Items",
             "card_type": "supplyitem",
+            "card_tooltip_message": "Click to view full info for the supply item."
         }
 
         # get stock

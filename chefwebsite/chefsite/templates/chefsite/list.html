@@ -7,7 +7,7 @@
     <!-- Output Paginated List -->
         <div style="display:flex; flex-wrap: wrap;" >
             {% for object in page_obj %}
-                    {% include 'chefsite/item.html' with item=object detail=False %}
+                    {% include 'chefsite/item.html' with item=object detail=False card_tooltip_message=card_tooltip_message %}
             {% endfor %}
         </div>
     {% endif %}
