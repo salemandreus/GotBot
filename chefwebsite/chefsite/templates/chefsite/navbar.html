@@ -12,10 +12,14 @@
         <li><a class="nav-link" href="{% url 'list_stock_low' %}">Running Low</a>
         </li>
 
-        <!-- Recently Refilled-->
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_stock_refilled' %}">Recently Refilled</a>
+        <!--Out Of Stock-->
+        <li><a class="nav-link" href="{% url 'list_stock_empty' %}">Out Of Stock</a>
         </li>
+
+<!--        &lt;!&ndash; Recently Refilled&ndash;&gt;-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="{% url 'list_stock_refilled' %}">Recently Refilled</a>-->
+<!--        </li>-->
 
         <!--All Stock-->
         <li class="nav-item">

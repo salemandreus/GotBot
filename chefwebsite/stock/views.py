@@ -5,6 +5,35 @@ from .models import SupplyItem
 from django.db.models import F
 
 #todo: make a stock and supplies base
+class StockEmptyListPage(ItemListBase):
+    """
+    Return List of Stock Items. Todo: Include links to Detailed stock items.
+    """
+    def get(self, request):
+        template_name = "chefsite/list-page.html"
+        # context = {"utc_now": datetime.now(timezone.utc)}
+        context = {
+            "title": "Out Of Stock",
+            "card_type": "stock",
+            "card_tooltip_message": "Click to view full info or update stock.",
+        }
+
+        # get stock
+        def query_items():
+            if request.user.is_authenticated:
+                low_stock = SupplyItem.objects.filter(stock__amount=0).select_related()
+
+            return low_stock
+
+        qs = query_items()
+        context['objects_count'] = qs.count()
+
+        # Add Pagination
+        context['page_obj'] = self.paginate(qs, 30, request)
+
+        return render(request, template_name, context)
+
+
 class StockLowListPage(ItemListBase):
     """
     Return List of Stock Items. Todo: Include links to Detailed stock items.
@@ -21,7 +50,8 @@ class StockLowListPage(ItemListBase):
         # get stock
         def query_items():
             if request.user.is_authenticated:
-                low_stock = SupplyItem.objects.filter(min_amount__gt=F("stock__amount")).select_related()
+                low_stock = (SupplyItem.objects.filter(min_amount__gt=F("stock__amount"))
+                                                .filter(stock__amount__gt=0).select_related())
 
             return low_stock
 
