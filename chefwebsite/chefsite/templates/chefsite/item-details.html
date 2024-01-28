@@ -19,6 +19,7 @@
         <div style="height: 1.6rem;">
             <p class="card-text">Code: <strong>{{ item.code }}</strong></p>
         </div>
+    <!-- NOTES -->
         <div {% if detail == False %} style="height: 7rem;" {% endif %}>
             <p class="card-text text-{% if card_type == "stock" and item.stock.amount == 0 %}white{% else %}muted{% endif %}">
                 <i>
