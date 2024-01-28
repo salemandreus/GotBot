@@ -13,7 +13,7 @@
 
 <!-- DETAILED VIEW MODAL -->
 <div class="modal fade" id="{{item.code}}-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document" style="pointer-events:all">
         <!-- DETAILED VIEW -->
         <div class="mx-auto" style="display:table">
             {% include 'chefsite/item-details.html' with item=item detail=True %}
