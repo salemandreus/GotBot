@@ -1,8 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import render, get_object_or_404, redirect
 
 from chefsite.views import ItemListBase
-from .models import SupplyItem
+from .models import SupplyItem, Stock
 from django.db.models import F
+
+from .forms import StockModelForm
 
 #todo: make a stock and supplies base
 class StockEmptyListPage(ItemListBase):
@@ -135,9 +138,34 @@ def detail(request, slug):
 
     return render(request, template_name, context)
 
-def update(request):
-    return render(request, 'stock/form.html', {})
 
-def confirm_update(request):
-    return render(request, 'stock/confirm-update.html', {})
+@staff_member_required
+def update(request, slug):
+    """
+    Update stock amount.
+    """
+    context = {}
+    template_name = 'stock/form.html'
 
+    # if request.user.is_authenticated: Todo: does it return this if unauthorized? Test
+
+    # Get the SupplyItem code that pertains to our supplyitem and its stock object
+    code = SupplyItem.objects.filter(slug=slug).first().code
+    # Get the relevant Stock object to have its amount updated in the form
+    obj = get_object_or_404(Stock, item_code=code)
+    if obj is None:  # todo: test - this shouldn't happen as we're getting the slug from its own detail page
+        return redirect("list_stock") # todo: use referring page, whichever it was
+    else:
+        context["title"] = f"Update Stock"
+        context["subtitle"] = f"Code: {code} Name: {obj.item_code.name}"
+        # GET EXISTING FORM
+        form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
+        if form.is_valid():
+            form.save()
+
+            # return redirect("detail_supplyitem", obj.slug)  # args=form.fields.slug))
+            return redirect("detail_stock", obj.item_code.slug)  # args=form.fields.slug))
+
+        context["form"] = form
+
+    return render(request, template_name, context)

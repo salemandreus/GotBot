@@ -7,4 +7,5 @@ urlpatterns = [
     path('out-of-stock/', views.StockEmptyListPage.as_view(), name='list_stock_empty'),
     path('refilled/', views.StockRefilledListPage.as_view(), name='list_stock_refilled'),
     path("<str:slug>/", views.detail, name='detail_stock'),
+    path("<str:slug>/update/", views.update, name='update_stock'),
 ]
