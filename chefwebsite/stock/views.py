@@ -8,26 +8,35 @@ from django.db.models import F
 
 from .forms import StockModelForm
 
-#todo: make a stock and supplies base
-class StockEmptyListPage(ItemListBase):
+class StockListBase(ItemListBase):
+    def get_context_data(self):
+        context = {
+            "card_type": "stock",
+            "card_tooltip_message": "Click card to view full info or update stock."
+        }
+        return context
+
+    def get(self, request):
+        super()
+
+
+class StockEmptyListPage(StockListBase):
     """
-    Return List of Stock Items. Todo: Include links to Detailed stock items.
+    Return List of Stock Items.
     """
     def get(self, request):
+        super()
+        context = super().get_context_data()
+        context["title"] = "Out Of Stock"
+
         template_name = "chefsite/list-page.html"
-        # context = {"utc_now": datetime.now(timezone.utc)}
-        context = {
-            "title": "Out Of Stock",
-            "card_type": "stock",
-            "card_tooltip_message": "Click to view full info or update stock.",
-        }
 
         # get stock
         def query_items():
             if request.user.is_authenticated:
-                low_stock = SupplyItem.objects.filter(stock__amount=0).select_related()
+                empty_stock = SupplyItem.objects.filter(stock__amount=0).select_related()
 
-            return low_stock
+            return empty_stock
 
         qs = query_items()
         context['objects_count'] = qs.count()
@@ -38,18 +47,14 @@ class StockEmptyListPage(ItemListBase):
         return render(request, template_name, context)
 
 
-class StockLowListPage(ItemListBase):
+class StockLowListPage(StockListBase):
     """
     Return List of Stock Items. Todo: Include links to Detailed stock items.
     """
     def get(self, request):
         template_name = "chefsite/list-page.html"
-        # context = {"utc_now": datetime.now(timezone.utc)}
-        context = {
-            "title": "Stock Running Low",
-            "card_type": "stock",
-            "card_tooltip_message": "Click to view full info or update stock.",
-        }
+        context = super().get_context_data()
+        context["title"] = "Stock Running Low"
 
         # get stock
         def query_items():
@@ -68,18 +73,14 @@ class StockLowListPage(ItemListBase):
         return render(request, template_name, context)
 
 
-class StockRefilledListPage(ItemListBase):
+class StockRefilledListPage(StockListBase):
     """
     Return List of Stock Items. Todo: Include links to Detailed stock items.
     """
     def get(self, request):
         template_name = "chefsite/list-page.html"
-        # context = {"utc_now": datetime.now(timezone.utc)}
-        context = {
-            "title": "Stock Recently Refilled",
-            "card_type": "stock",
-            "card_tooltip_message": "Click to view full info or update stock."
-        }
+        context = super().get_context_data()
+        context["title"] = "Stock Recently Refilled"
 
         # get stock
         def query_items():
@@ -96,18 +97,15 @@ class StockRefilledListPage(ItemListBase):
         return render(request, template_name, context)
 
 
-class StockAllListPage(ItemListBase):
+class StockAllListPage(StockListBase):
     """
     Return List of Stock Items. Todo: Include links to Detailed stock items.
     """
     def get(self, request):
+        super()
         template_name = "chefsite/list-page.html"
-        # context = {"utc_now": datetime.now(timezone.utc)}
-        context = {
-            "title": "All Stock",
-            "card_type": "stock",
-            "card_tooltip_message": "Click to view full info or update stock."
-        }
+        context = super().get_context_data()
+        context["title"] ="All Stock"
 
         # get stock
         def query_items():
