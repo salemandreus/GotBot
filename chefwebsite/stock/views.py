@@ -147,25 +147,23 @@ def update(request, slug):
     context = {}
     template_name = 'stock/form.html'
 
-    # if request.user.is_authenticated: Todo: does it return this if unauthorized? Test
-
-    # Get the SupplyItem code that pertains to our supplyitem and its stock object
+    # if request.user.is_authenticated:                                                         Todo: does it return this if unauthorized? Test
     code = SupplyItem.objects.filter(slug=slug).first().code
-    # Get the relevant Stock object to have its amount updated in the form
     obj = get_object_or_404(Stock, item_code=code)
-    if obj is None:  # todo: test - this shouldn't happen as we're getting the slug from its own detail page
-        return redirect("list_stock") # todo: use referring page, whichever it was
-    else:
-        context["title"] = f"Update Stock"
-        context["subtitle"] = f"Code: {code} Name: {obj.item_code.name}"
-        # GET EXISTING FORM
-        form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
-        if form.is_valid():
-            form.save()
+    form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
 
+    if request.method == "GET":
+        if obj is None:  # todo: test - this shouldn't happen as we're getting the slug from its own detail page
+            return redirect("list_stock") # todo: use referring page, whichever it was
+        else:
+            context["title"] = f"Update Stock"
+            context["subtitle"] = f"Code: {code} Name: {obj.item_code.name}"
+            context["form"] = form
+
+        return render(request, template_name, context)
+            # GET EXISTING FORM
+    elif request.method == "POST":
+            if form.is_valid():
+                form.save()
             # return redirect("detail_supplyitem", obj.slug)  # args=form.fields.slug))
             return redirect("detail_stock", obj.item_code.slug)  # args=form.fields.slug))
-
-        context["form"] = form
-
-    return render(request, template_name, context)
