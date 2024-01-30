@@ -1,5 +1,6 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views import View
 
 from chefsite.views import ItemListBase
 from .models import SupplyItem, Stock
@@ -139,31 +140,34 @@ def detail(request, slug):
     return render(request, template_name, context)
 
 
-@staff_member_required
-def update(request, slug):
+#Todo: LoginRequiredMixin
+class StockUpdate(View):
     """
     Update stock amount.
     """
-    context = {}
-    template_name = 'stock/form.html'
+    def get(self, request, slug):
+        code = SupplyItem.objects.filter(slug=slug).first().code
+        obj = get_object_or_404(Stock, item_code=code)
+        form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
 
-    # if request.user.is_authenticated:                                                         Todo: does it return this if unauthorized? Test
-    code = SupplyItem.objects.filter(slug=slug).first().code
-    obj = get_object_or_404(Stock, item_code=code)
-    form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
+        template_name = 'stock/form.html'
+        context = {
+            "title": "Update Stock",
+            "subtitle": f"Code: {code} Name: {obj.item_code.name}",
+            "form": form,
+        }
 
-    if request.method == "GET":
         if obj is None:  # todo: test - this shouldn't happen as we're getting the slug from its own detail page
             return redirect("list_stock") # todo: use referring page, whichever it was
-        else:
-            context["title"] = f"Update Stock"
-            context["subtitle"] = f"Code: {code} Name: {obj.item_code.name}"
-            context["form"] = form
 
         return render(request, template_name, context)
-            # GET EXISTING FORM
-    elif request.method == "POST":
-            if form.is_valid():
-                form.save()
-            # return redirect("detail_supplyitem", obj.slug)  # args=form.fields.slug))
-            return redirect("detail_stock", obj.item_code.slug)  # args=form.fields.slug))
+
+    def post(self, request, slug):
+        code = SupplyItem.objects.filter(slug=slug).first().code
+        obj = get_object_or_404(Stock, item_code=code)
+        form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
+
+        if form.is_valid():
+            form.save()
+        # return redirect("list_stock")
+        return redirect("detail_stock", slug)
