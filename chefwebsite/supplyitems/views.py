@@ -11,8 +11,9 @@ from .models import SupplyItem
 
 class SupplyItemListPage(ItemListBase):
     """
-    Return List of SupplyItem. Todo:Include links to Detailed supplyitem.
+    Displays List of SupplyItems.
     """
+
     def get(self, request):
         template_name = "chefsite/list-page.html"
         # context = {"utc_now": datetime.now(timezone.utc)}
@@ -22,15 +23,10 @@ class SupplyItemListPage(ItemListBase):
             "card_tooltip_message": "Click to view full info for the supply item."
         }
 
-        # get stock
-        def query_items():
-            if request.user.is_authenticated:
-                qs = SupplyItem.objects.select_related()
-
-            return qs
-
-        qs = query_items()
+        # get supplyitems and related stock
+        qs = self.query_items(request)
         context['objects_count'] = qs.count()
+
         # Add Pagination
         context['page_obj'] = self.paginate(qs, 30, request)
 
@@ -39,9 +35,9 @@ class SupplyItemListPage(ItemListBase):
 
 def detail(request, slug):
     """
-    Retrieve a single supplyitem via a slug (detailed).
-    Include buttons to edit or delete supplyitem.
+    Displays a single supplyitem via a slug (detailed).
     """
+
     template_name = "chefsite/detail-page.html"
     obj = get_object_or_404(SupplyItem, slug=slug)
     context = {

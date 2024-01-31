@@ -9,6 +9,10 @@ from django.db.models import F
 from .forms import StockModelForm
 
 class StockListBase(ItemListBase):
+    """
+    Overrides ItemListBase. Inherited by all Stock Lists.
+    """
+
     def get_context_data(self):
         context = {
             "card_type": "stock",
@@ -22,8 +26,14 @@ class StockListBase(ItemListBase):
 
 class StockEmptyListPage(StockListBase):
     """
-    Return List of Stock Items.
+    Displays a List of Out Of Stock Items.
     """
+
+    def query_items(self, request):
+        if request.user.is_authenticated:
+            empty_stock = SupplyItem.objects.filter(stock__amount=0).select_related()
+        return empty_stock
+
     def get(self, request):
         super()
         context = super().get_context_data()
@@ -31,14 +41,7 @@ class StockEmptyListPage(StockListBase):
 
         template_name = "chefsite/list-page.html"
 
-        # get stock
-        def query_items():
-            if request.user.is_authenticated:
-                empty_stock = SupplyItem.objects.filter(stock__amount=0).select_related()
-
-            return empty_stock
-
-        qs = query_items()
+        qs = self.query_items(request)
         context['objects_count'] = qs.count()
 
         # Add Pagination
@@ -49,22 +52,21 @@ class StockEmptyListPage(StockListBase):
 
 class StockLowListPage(StockListBase):
     """
-    Return List of Stock Items. Todo: Include links to Detailed stock items.
+    Displays List of the Stock Items that are running low.
     """
+
+    def query_items(self, request):
+        if request.user.is_authenticated:
+            low_stock = (SupplyItem.objects.filter(min_amount__gt=F("stock__amount"))
+                         .filter(stock__amount__gt=0).select_related())
+        return low_stock
+
     def get(self, request):
         template_name = "chefsite/list-page.html"
         context = super().get_context_data()
         context["title"] = "Stock Running Low"
 
-        # get stock
-        def query_items():
-            if request.user.is_authenticated:
-                low_stock = (SupplyItem.objects.filter(min_amount__gt=F("stock__amount"))
-                                                .filter(stock__amount__gt=0).select_related())
-
-            return low_stock
-
-        qs = query_items()
+        qs = self.query_items(request)
         context['objects_count'] = qs.count()
 
         # Add Pagination
@@ -75,21 +77,14 @@ class StockLowListPage(StockListBase):
 
 class StockRefilledListPage(StockListBase):
     """
-    Return List of Stock Items. Todo: Include links to Detailed stock items.
+    Display List of Recently Refilled Stock Items.     # WIP - not currently linked
     """
     def get(self, request):
         template_name = "chefsite/list-page.html"
         context = super().get_context_data()
         context["title"] = "Stock Recently Refilled"
 
-        # get stock
-        def query_items():
-            if request.user.is_authenticated:
-                qs = SupplyItem.objects.select_related()
-
-            return qs
-
-        qs = query_items()
+        qs = self.query_items(request)
         context['objects_count'] = qs.count()
         # Add Pagination
         context['page_obj'] = self.paginate(qs, 30, request)
@@ -99,7 +94,7 @@ class StockRefilledListPage(StockListBase):
 
 class StockAllListPage(StockListBase):
     """
-    Return List of Stock Items. Todo: Include links to Detailed stock items.
+    Display List of All stock items.
     """
     def get(self, request):
         super()
@@ -108,13 +103,7 @@ class StockAllListPage(StockListBase):
         context["title"] ="All Stock"
 
         # get stock
-        def query_items():
-            if request.user.is_authenticated:
-                qs = SupplyItem.objects.select_related()
-
-            return qs
-
-        qs = query_items()
+        qs = self.query_items(request)
         context['objects_count'] = qs.count()
         # Add Pagination
         context['page_obj'] = self.paginate(qs, 30, request)
