@@ -9,21 +9,21 @@
 
     <!-- Stock Running Low --><!--todo: filter by running below "low amount/notify-refill-at amount"-->
     <p class="lead">Stock <strong>Running Low</strong><p>
-    {% include 'chefsite/list.html' with title="Supply Items to Stock" page_obj=page_obj_low_stock card_type="stock" objects_count=low_stock_objects_count card_tooltip_message=stock_card_tooltip_message %}
+    {% include 'chefsite/list.html' with title="Supply Items to Stock" page_obj=page_obj_low_stock card_type="stock" objects_count=low_stock_objects_count card_tooltip_message=card_tooltip_message %}
 
     <br>
     <hr>
 
     <!-- Recent Stock Refilled --> <!--Todo: set in order of recency added-->
     <p class="lead"><strong>Out Of Stock</strong><p>
-    {% include 'chefsite/list.html' with title="Stock Recently Refilled" page_obj=page_obj_out_of_stock card_type="stock" objects_count=stock_objects_count card_tooltip_message=stock_card_tooltip_message %}
+    {% include 'chefsite/list.html' with title="Stock Recently Refilled" page_obj=page_obj_out_of_stock card_type="stock" objects_count=stock_objects_count card_tooltip_message=card_tooltip_message %}
 
     <br>
     <hr>
 
     <!-- Recent New Supply Items Added --><!--Todo: set in order of recency added-->
     <p class="lead">New <strong>Supply Items</strong> Created</p><!-- todo include updated?-->
-    {% include 'chefsite/list.html' with title="Supply Items" page_obj=page_obj_supplyitems card_type="supplyitem" objects_count=supplyitems_objects_count card_tooltip_message=supplyitems_card_tooltip_message %}
+    {% include 'chefsite/list.html' with title="Supply Items" page_obj=page_obj_supplyitems card_type="supplyitem" objects_count=supplyitems_objects_count card_tooltip_message=card_tooltip_message %}
 
     <br>
 {% endblock %}

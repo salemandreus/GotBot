@@ -21,10 +21,12 @@ class ItemListBase(View):
         """
         Override with and return the view-specific context data defined as a dictionary called "context".
         """
+
         context = {
             "title": "",# Page Title
             "card_type": "", # "stock" or "supplyitem"
-            "card_tooltip_message": "" # use the stock message or the supplyitem message
+            "card_tooltip_message": "Click to view full details.",
+            "default_template_name": "chefsite/list-page.html"
         }
         return context
 
@@ -41,8 +43,16 @@ class ItemListBase(View):
         """
         Base Get Functionality for a ItemList class to be overridden.
         """
-        template_name = ""
-        context = {}
+
+        context = self.get_context_data()
+        template_name = context["default_template_name"]
+
+        # get supplyitems and related stock
+        qs = self.query_items(request)
+        context['objects_count'] = qs.count()
+
+        # Add Pagination
+        context['page_obj'] = self.paginate(qs, 30, request)
         return render(request, template_name, context)
 
 
@@ -62,10 +72,7 @@ class HomePage(ItemListBase):
         return low_stock, out_of_stock, supplyitems  # ,refilled
 
     def get_context_data(self):
-        context = {
-            "supplyitems_card_tooltip_message" : "Click to view full info for the supply item.",
-            "stock_card_tooltip_message" : "Click to view full info or update stock."
-        }
+        context = super().get_context_data()
         return context
 
     def get(self, request):

@@ -15,26 +15,11 @@ class SupplyItemListPage(ItemListBase):
     """
 
     def get_context_data(self):
-        context = {
-            "title": "Supply Items",
-            "card_type": "supplyitem",
-            "card_tooltip_message": "Click to view full info for the supply item."
-        }
+        context = super().get_context_data()
+        context["card_type"] = "supplyitem"
+        context["title"] = "Supply Items"
+
         return context
-
-
-    def get(self, request):
-        template_name = "chefsite/list-page.html"
-        context = self.get_context_data()
-
-        # get supplyitems and related stock
-        qs = self.query_items(request)
-        context['objects_count'] = qs.count()
-
-        # Add Pagination
-        context['page_obj'] = self.paginate(qs, 30, request)
-
-        return render(request, template_name, context)
 
 
 def detail(request, slug):

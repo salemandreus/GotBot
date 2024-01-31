@@ -14,14 +14,13 @@ class StockListBase(ItemListBase):
     """
 
     def get_context_data(self):
-        context = {
-            "card_type": "stock",
-            "card_tooltip_message": "Click card to view full info or update stock."
-        }
+        context = super().get_context_data()
+        context["card_type"] = "stock"
+
         return context
 
-    def get(self, request):
-        super()
+    # def get(self, request):
+    #     super().get(request)
 
 
 class StockEmptyListPage(StockListBase):
@@ -32,26 +31,14 @@ class StockEmptyListPage(StockListBase):
     def query_items(self, request):
         if request.user.is_authenticated:
             empty_stock = SupplyItem.objects.filter(stock__amount=0).select_related()
+
         return empty_stock
 
     def get_context_data(self):
         context = super().get_context_data()
         context["title"] = "Out Of Stock"
+
         return context
-
-    def get(self, request):
-        super()
-        context = self.get_context_data()
-
-        template_name = "chefsite/list-page.html"
-
-        qs = self.query_items(request)
-        context['objects_count'] = qs.count()
-
-        # Add Pagination
-        context['page_obj'] = self.paginate(qs, 30, request)
-
-        return render(request, template_name, context)
 
 
 class StockLowListPage(StockListBase):
@@ -68,20 +55,8 @@ class StockLowListPage(StockListBase):
     def get_context_data(self):
         context = super().get_context_data()
         context["title"] = "Stock Running Low"
+
         return context
-
-    def get(self, request):
-        template_name = "chefsite/list-page.html"
-        context = self.get_context_data()
-
-
-        qs = self.query_items(request)
-        context['objects_count'] = qs.count()
-
-        # Add Pagination
-        context['page_obj'] = self.paginate(qs, 30, request)
-
-        return render(request, template_name, context)
 
 
 class StockRefilledListPage(StockListBase):
@@ -94,17 +69,6 @@ class StockRefilledListPage(StockListBase):
         context["title"] = "Stock Recently Refilled"
         return context
 
-    def get(self, request):
-        template_name = "chefsite/list-page.html"
-        context = self.get_context_data()
-
-        qs = self.query_items(request)
-        context['objects_count'] = qs.count()
-        # Add Pagination
-        context['page_obj'] = self.paginate(qs, 30, request)
-
-        return render(request, template_name, context)
-
 
 class StockAllListPage(StockListBase):
     """
@@ -114,19 +78,8 @@ class StockAllListPage(StockListBase):
     def get_context_data(self):
         context = super().get_context_data()
         context["title"] = "All Stock"
+
         return context
-
-    def get(self, request):
-        template_name = "chefsite/list-page.html"
-        context = self.get_context_data()
-
-        # get stock
-        qs = self.query_items(request)
-        context['objects_count'] = qs.count()
-        # Add Pagination
-        context['page_obj'] = self.paginate(qs, 30, request)
-
-        return render(request, template_name, context)
 
 
 def detail(request, slug):
