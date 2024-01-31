@@ -103,29 +103,47 @@ class StockUpdate(View):
     """
     Update stock amount.
     """
-    def get(self, request, slug):
+    def get_context_data(self):
+        context = {
+            "card_type" : "stock",
+        }
+        return context
+
+    def get_form(self, request, slug):
+        """Get Simple Form To Update Stock Amount"""
         code = SupplyItem.objects.filter(slug=slug).first().code
         obj = get_object_or_404(Stock, item_code=code)
         form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
+        return code, obj, form
+
+    def post_form(self, request, slug):
+        """Post Simple Form To Update Stock Amount"""
+        code = SupplyItem.objects.filter(slug=slug).first().code
+        obj = get_object_or_404(Stock, item_code=code)
+        form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
+        if form.is_valid():
+            form.save()
+
+    def get(self, request, slug):
+        context = self.get_context_data()
+
+        if context["card_type"] == "stock":
+            code, obj, form = self.get_form(request, slug)
+            context["form"] = form
 
         template_name = 'stock/form.html'
-        context = {
-            "title": "Update Stock",
-            "subtitle": f"Code: {code} Name: {obj.item_code.name}",
-            "form": form,
-        }
+        # context["title"] = "Update Stock"
+        # context["subtitle"] = f"Code: {code} Name: {obj.item_code.name}"
 
-        if obj is None:  # todo: test - this shouldn't happen as we're getting the slug from its own detail page
-            return redirect("list_stock") # todo: use referring page, whichever it was
+        # if obj is None:
+        #     return redirect("list_stock")
 
         return render(request, template_name, context)
 
     def post(self, request, slug):
-        code = SupplyItem.objects.filter(slug=slug).first().code
-        obj = get_object_or_404(Stock, item_code=code)
-        form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
+        context = self.get_context_data()
+        # if context["card_type"] == "stock":
+        self.post_form(request, slug)
 
-        if form.is_valid():
-            form.save()
         # return redirect("list_stock")
         return redirect("detail_stock", slug)
