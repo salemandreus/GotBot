@@ -17,6 +17,17 @@ class ItemListBase(View):
             qs = SupplyItem.objects.select_related()
         return qs
 
+    def get_context_data(self):
+        """
+        Override with and return the view-specific context data defined as a dictionary called "context".
+        """
+        context = {
+            "title": "",# Page Title
+            "card_type": "", # "stock" or "supplyitem"
+            "card_tooltip_message": "" # use the stock message or the supplyitem message
+        }
+        return context
+
     def paginate(self, item_list, per_page, request):
         """
         Paginate a list of items. The number per page is passed in as per_page.
@@ -50,13 +61,17 @@ class HomePage(ItemListBase):
 
         return low_stock, out_of_stock, supplyitems  # ,refilled
 
-    def get(self, request):
-        template_name = "chefsite/index.html"
+    def get_context_data(self):
         context = {
             "title": "Welcome back, {username}!".format(username=request.user),
             "supplyitems_card_tooltip_message" : "Click to view full info for the supply item.",
             "stock_card_tooltip_message" : "Click to view full info or update stock."
         }
+        return context
+
+    def get(self, request):
+        template_name = "chefsite/index.html"
+        context = self.get_context_data()
 
         # get all supplyitems and stock lists that are on home page
         low_stock, out_of_stock, supplyitems = self.query_items(request)     #wip refilled

@@ -14,14 +14,18 @@ class SupplyItemListPage(ItemListBase):
     Displays List of SupplyItems.
     """
 
-    def get(self, request):
-        template_name = "chefsite/list-page.html"
-        # context = {"utc_now": datetime.now(timezone.utc)}
+    def get_context_data(self):
         context = {
             "title": "Supply Items",
             "card_type": "supplyitem",
             "card_tooltip_message": "Click to view full info for the supply item."
         }
+        return context
+
+
+    def get(self, request):
+        template_name = "chefsite/list-page.html"
+        context = self.get_context_data()
 
         # get supplyitems and related stock
         qs = self.query_items(request)

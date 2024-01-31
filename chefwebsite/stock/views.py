@@ -34,10 +34,14 @@ class StockEmptyListPage(StockListBase):
             empty_stock = SupplyItem.objects.filter(stock__amount=0).select_related()
         return empty_stock
 
-    def get(self, request):
-        super()
+    def get_context_data(self):
         context = super().get_context_data()
         context["title"] = "Out Of Stock"
+        return context
+
+    def get(self, request):
+        super()
+        context = self.get_context_data()
 
         template_name = "chefsite/list-page.html"
 
@@ -61,10 +65,15 @@ class StockLowListPage(StockListBase):
                          .filter(stock__amount__gt=0).select_related())
         return low_stock
 
-    def get(self, request):
-        template_name = "chefsite/list-page.html"
+    def get_context_data(self):
         context = super().get_context_data()
         context["title"] = "Stock Running Low"
+        return context
+
+    def get(self, request):
+        template_name = "chefsite/list-page.html"
+        context = self.get_context_data()
+
 
         qs = self.query_items(request)
         context['objects_count'] = qs.count()
@@ -79,10 +88,15 @@ class StockRefilledListPage(StockListBase):
     """
     Display List of Recently Refilled Stock Items.     # WIP - not currently linked
     """
-    def get(self, request):
-        template_name = "chefsite/list-page.html"
+
+    def get_context_data(self):
         context = super().get_context_data()
         context["title"] = "Stock Recently Refilled"
+        return context
+
+    def get(self, request):
+        template_name = "chefsite/list-page.html"
+        context = self.get_context_data()
 
         qs = self.query_items(request)
         context['objects_count'] = qs.count()
@@ -96,11 +110,15 @@ class StockAllListPage(StockListBase):
     """
     Display List of All stock items.
     """
-    def get(self, request):
-        super()
-        template_name = "chefsite/list-page.html"
+
+    def get_context_data(self):
         context = super().get_context_data()
-        context["title"] ="All Stock"
+        context["title"] = "All Stock"
+        return context
+
+    def get(self, request):
+        template_name = "chefsite/list-page.html"
+        context = self.get_context_data()
 
         # get stock
         qs = self.query_items(request)
