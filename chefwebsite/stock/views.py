@@ -90,7 +90,7 @@ def detail(request, slug):
     template_name = "chefsite/detail-page.html"
     obj = get_object_or_404(SupplyItem, slug=slug)
     context = {
-        "title": f"Code: {obj.code} Name: {obj.name}",
+        "title": "View Stock",
         "card_type": "stock",
         "object": obj
     }
@@ -101,20 +101,21 @@ def detail(request, slug):
 #Todo: LoginRequiredMixin
 class StockUpdate(View):
     """
-    Update stock amount.
+    Update stock amount. This is class-based to potentially be integrated into another class-based view.
     """
     def get_context_data(self):
         context = {
+            "title" : "Update Stock",
             "card_type" : "stock",
         }
         return context
 
     def get_form(self, request, slug):
         """Get Simple Form To Update Stock Amount"""
-        code = SupplyItem.objects.filter(slug=slug).first().code
-        obj = get_object_or_404(Stock, item_code=code)
+        supplyitem_obj = SupplyItem.objects.filter(slug=slug).first()
+        obj = get_object_or_404(Stock, item_code=supplyitem_obj.code)
         form = StockModelForm(request.POST or None, request.FILES or None, instance=obj)
-        return code, obj, form
+        return supplyitem_obj, obj, form
 
     def post_form(self, request, slug):
         """Post Simple Form To Update Stock Amount"""
@@ -127,12 +128,15 @@ class StockUpdate(View):
     def get(self, request, slug):
         context = self.get_context_data()
 
-        if context["card_type"] == "stock":
-            code, obj, form = self.get_form(request, slug)
-            context["form"] = form
+        supplyitem_obj, obj, form = self.get_form(request, slug)
+        context["object"] = supplyitem_obj
+        context["form_object"] = obj
+        context["form"] = form
+        context["has_stock_form"] = True
 
-        template_name = 'stock/form.html'
-        # context["title"] = "Update Stock"
+        # template_name = 'stock/form.html'
+        template_name = 'chefsite/detail-page.html'
+
         # context["subtitle"] = f"Code: {code} Name: {obj.item_code.name}"
 
         # if obj is None:

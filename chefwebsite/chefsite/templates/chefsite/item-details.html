@@ -24,35 +24,38 @@
 
         <!-- STOCK -->
         {% if card_type == "stock" %}
-            <br>
             <p class="card-text text-{% if item.stock.amount == 0 %}white{% else %}muted{% endif %}" style="align:bottom; margin-bottom:0">
 
                 <strong>Stock:</strong>
             <p class="card-text" style="align:bottom;">In Stock:
 
 
+                {% if has_stock_form %}
+                    <!-- STOCK AMOUNT AS ADJUSTABLE FORM ITEM IF IN FORM VIEW   -->
+                    {% include 'stock/form.html' with form=form %}
+                {% else %}
+                    <!-- SHOW STOCK AMOUNT AS TEXT -->
+                      <!-- COLOR INDICATE HOW LOW STOCK AMOUNT IS -->
+                    <strong class="
+                        {% if item.stock.amount == 0 %}
+                            text-white
+                        {% elif item.stock.amount < item.min_amount  %}
+                            text-danger
+                        {% elif item.stock.amount < item.med_amount %}
+                            text-warning
+                        {% else %}
+                            text-success
+                        {% endif %}
+                        ;">{{ item.stock.amount }}
 
-               <!-- COLOR INDICATE HOW LOW STOCK AMOUNT IS -->
-                <strong class="
-                    {% if item.stock.amount == 0 %}
-                        text-white
-                    {% elif item.stock.amount < item.min_amount  %}
-                        text-danger
-                    {% elif item.stock.amount < item.med_amount %}
-                        text-warning
-                    {% else %}
-                        text-success
-                    {% endif %}
-                    ;">{{ item.stock.amount }}
-
-                <!-- ALSO WARNING TEXT IF EMPTY OR RUNNING LOW -->
-                    {% if item.stock.amount == 0 %}
-                        <strong class="text-white">&emsp; OUT OF STOCK </strong>
-                    {% elif item.stock.amount < item.min_amount  %}
-                        <strong class="text-danger">&emsp; RUNNING LOW!</strong>
-                    {% endif %}
-
-                </strong>
+                      <!-- ALSO WARNING TEXT IF EMPTY OR RUNNING LOW -->
+                        {% if item.stock.amount == 0 %}
+                            <strong class="text-white">&emsp; OUT OF STOCK </strong>
+                        {% elif item.stock.amount < item.min_amount  %}
+                            <strong class="text-danger">&emsp; RUNNING LOW!</strong>
+                        {% endif %}
+                {% endif %}
+                    </strong>
             </p>
 
             <div class="container text-left">

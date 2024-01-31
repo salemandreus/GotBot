@@ -1,20 +1,19 @@
-{% extends "chefsite/base.html" %}
-
-{% block title %}
-    <h1>{{ title }}</h1>
-    <h4>{{ subtitle }}</h4>
-{% endblock %}
-
-{% block content %}
-
 <form method='POST' action='' enctype="multipart/form-data"> {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-primary" type="submit">Update</button>
+    <div class="container text-left">
+        <div class="row" style="align-items: center">
+            <div class="col-3" style="padding-left:0">
+                {{ form.as_p }}
+            </div>
+             <div class="col-6" style="padding:0">
+            </div>
+            <div class="col-3" style="padding-left:0">
+                <button class="btn btn-primary" type="submit">Update</button>
+            </div>
+        </div>
+    </div>
 </form>
-
 
 <!--    <form>-->
 <!--            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><</button>-->
 <!--            <button type="button" class="btn btn-primary">></button>-->
 <!--    </form>-->
-{% endblock %}

@@ -1,19 +1,18 @@
 {% extends "chefsite/base.html" %}
 
 {% block title %}<!-- todo: or show as an alert! -->
-<!-- todo: use modals for these and all forms if time permits-->
-<h1>View Item</h1>
+<h1>{{title}}</h1>
 {% endblock %}
 
 {% block content %}
 
     <!-- If No object --> <!-- todo: this probably won't show -->
     {% if not object %}
-        {% include 'chefsite/no-items.html' with title=title %}
+        {% include 'chefsite/no-items.html' with title="item to update" %}
     {% else %}
     <!-- Output object -->
         <div class="mx-auto" style="display:table">
-                {% include 'chefsite/item.html' with item=object card_type=card_type detail=True %}
+                {% include 'chefsite/item.html' with item=object card_type=card_type detail=True has_stock_form=has_stock_form %}
         </div>
     {% endif %}
 
