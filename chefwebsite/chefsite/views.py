@@ -63,7 +63,6 @@ class HomePage(ItemListBase):
 
     def get_context_data(self):
         context = {
-            "title": "Welcome back, {username}!".format(username=request.user),
             "supplyitems_card_tooltip_message" : "Click to view full info for the supply item.",
             "stock_card_tooltip_message" : "Click to view full info or update stock."
         }
@@ -72,6 +71,7 @@ class HomePage(ItemListBase):
     def get(self, request):
         template_name = "chefsite/index.html"
         context = self.get_context_data()
+        context["title"] = "Welcome back, {username}!".format(username=request.user)
 
         # get all supplyitems and stock lists that are on home page
         low_stock, out_of_stock, supplyitems = self.query_items(request)     #wip refilled
